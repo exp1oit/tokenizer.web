@@ -40,6 +40,8 @@
   function CardInputElement (element, options) {
     InputElement.call(this, element, options)
     var opts = options || {};
+    this.name = opts.name;
+    this.length = opts.length;
     this.element.setAttribute('name', opts.name || opts.autocomplete);
     this.element.setAttribute('type', 'text');
     this.element.setAttribute('pattern', '\d*');
@@ -118,16 +120,38 @@
   CardForm.prototype.initInput = function (input) {
     var self = this;
     input.element.addEventListener('keyup', function (e) {
-      self.onInputChange(e);
+      self.onInputChange(e, input);
+      if (!input.value && event.keyCode == 8) self.focusPrevInput(input);
     });
     input.element.addEventListener('blur', function (e) {
-      self.onInputChange(e);
+      self.onInputChange(e, input);
     });
-  }
-  CardForm.prototype.onInputChange = function (e) {
-    var errors = this.validate(this.getValues());
+  };
+  CardForm.prototype.onInputChange = function (e, input) {
+    var errors = this.validate(this.getValues()) || {};
     this.showErrors(errors);
-  }
+    if (String(input.value).length >= input.length && !errors[input.name]) {
+      this.focusNextInput(input);
+    }
+  };
+  CardForm.prototype.focusNextInput = function (input) {
+    var idx = CardForm.inputOrder.indexOf(input.name);
+    if (idx === -1) return;
+
+    var nextInputName = CardForm.inputOrder[idx+1];
+    if (!this.inputs[nextInputName]) return;
+
+    this.inputs[nextInputName].element.focus();
+  };
+  CardForm.prototype.focusPrevInput = function (input) {
+    var idx = CardForm.inputOrder.indexOf(input.name);
+    if (idx === -1) return;
+
+    var nextInputName = CardForm.inputOrder[idx-1];
+    if (!this.inputs[nextInputName]) return;
+
+    this.inputs[nextInputName].element.focus();
+  };
 
   CardForm.prototype.getValues = function () {
     return {
@@ -150,7 +174,7 @@
     else if (errorObj.expYear && this.inputs.expYear.touched) this.errors.expDate.innerHTML = errorObj.expYear[0];
     else this.errors.expDate.innerHTML = null;
   }
-
+  CardForm.inputOrder = ['pan','expMonth','expYear','cvv'];
   CardForm.validators = {
     pan: {
       presence: true,
