@@ -9,6 +9,7 @@ server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 
 server.use('/public', Express.static(path.resolve(process.cwd(), 'public')));
+server.use('/vendor', Express.static(path.resolve(process.cwd(), 'node_modules')));
 
 server.get('/', (req, res) => {
   res.json({
