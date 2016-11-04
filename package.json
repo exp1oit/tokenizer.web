@@ -1,0 +1,19 @@
+{
+  "name": "tokenizer.web",
+  "version": "0.1.0",
+  "description": "Payment tokenizer for card processing over PCI DSS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nebo15/tokenizer.web.git"
+  },
+  "author": "Nebo15",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nebo15/tokenizer.web/issues"
+  },
+  "homepage": "https://github.com/Nebo15/tokenizer.web#readme"
+}
