@@ -1,6 +1,7 @@
 <form class="card-form" data-tokenizer-element="form">
   <div class="card-form-row card-form-row-pan">
     <input data-tokenizer-element="pan" placeholder="XXXX XXXX XXXX XXXX"/>
+    <div data-tokenizer-error="pan" class="error"></div>
   </div>
   <div class="card-form-row">
     <div class="card-form-exp">
@@ -10,9 +11,11 @@
       <div class="card-form-exp-year">
         <input data-tokenizer-element="expYear" placeholder="YY" />
       </div>
+      <div data-tokenizer-error="expDate" class="error"></div>
     </div>
     <div class="card-form-cvv">
       <input data-tokenizer-element="cvv" placeholder="CVV" />
+      <div data-tokenizer-error="cvv" class="error"></div>
     </div>
   </div>
 </form>
