@@ -2,12 +2,12 @@
   "name": "tokenizer.web",
   "version": "0.1.0",
   "description": "Payment tokenizer for card processing over PCI DSS",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node": ">=6.0.0",
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Nebo15/tokenizer.web/issues"
   },
-  "homepage": "https://github.com/Nebo15/tokenizer.web#readme"
+  "homepage": "https://github.com/Nebo15/tokenizer.web#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
