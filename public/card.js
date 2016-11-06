@@ -1,74 +1,5 @@
 (function (window) { 'use strict';
 
-  function getSelection (el) {
-    var start, end, rangeEl, clone
-
-    if (el.selectionStart !== undefined) {
-      start = el.selectionStart
-      end = el.selectionEnd
-    }
-    else {
-      try {
-        el.focus()
-        rangeEl = el.createTextRange()
-        clone = rangeEl.duplicate()
-
-        rangeEl.moveToBookmark(document.selection.createRange().getBookmark())
-        clone.setEndPoint('EndToStart', rangeEl)
-
-        start = clone.text.length
-        end = start + rangeEl.text.length
-      }
-      catch (e) { /* not focused or not visible */ }
-    }
-
-    return { start, end }
-  }
-
-  function MaskedInput (element, mask) {
-    console.log('init masked input');
-    this.element = element;
-    this.$mask = MaskedInput.parse(mask);
-    this.currentIdx = 0;
-
-    this.onKeydown = this.onKeydown.bind(this);
-    this.element.addEventListener('keydown', this.onKeydown);
-  }
-  MaskedInput.prototype.getNextPlace = function (position) {
-    var i = position,
-        length = this.$mask.length,
-        match = null;
-    while(!match || i < length ) {
-      if (this.$mask[i] instanceof RegExp) {
-        match = i;
-      }
-      i++;
-    }
-    return match;
-  }
-  MaskedInput.prototype.onKeydown = function (e) {
-    var selection = getSelection(this.element)
-    var char = String.fromCharCode(e.keyCode);
-    console.log(char);
-    // var nextPosition = this.getNextPlace(selection.start);
-    // if (nextPosition && !this.$mask[nextPosition].test(char)) e.preventDefault();
-  }
-  MaskedInput.parseMask = function (mask) {
-    return mask.split('').map(function (i) {
-      return MaskedInput.maskOptions[i] || i;
-    });
-  }
-  MaskedInput.formatValued = function (value, mask) {
-
-  }
-  MaskedInput.isBackspace = function (keyCode) {
-    return keyCode === 8;
-  }
-  MaskedInput.maskOptions = {
-    '1': /\d/,
-    'w': /\w/,
-  }
-
   function InputElement (element) {
     this.dirty = false;
     this.pristine = true;
@@ -140,7 +71,7 @@
   function CardInputMaskElement (element, options) {
     InputElement.call(this, element, options);
     this.mask = options.mask;
-    this.$mask = new MaskedInput(this.element, this.mask);
+    this.$mask = new Nebo15Mask.MaskedInput(this.element, this.mask);
   }
   CardInputMaskElement.prototype = InputElement.prototype;
 
@@ -235,7 +166,7 @@
 
   CardForm.prototype.getValues = function () {
     return {
-      pan: this.inputs.pan.value,
+      pan: this.inputs.pan.$mask.model,
       expMonth: this.inputs.expMonth.value,
       expYear: this.inputs.expYear.value,
       cvv: this.inputs.cvv.value,
