@@ -25,6 +25,7 @@
 
   App.prototype.onGetToken = function (event) {
     var values = this.form.getValues();
+    var self = this;
     this.$$request('/tokens', {
       method: 'POST',
       body: {
@@ -36,8 +37,40 @@
       }
     }).then(function (resp) {
       return event.source.postMessage({ action: 'getToken', payload: resp.data }, '*');
-    })
+    }).catch(function (error) {
+      console.log(self.mapServerErrors(error));
+      self.form.showErrors(self.mapServerErrors(error));
+    });
   }
+  App.mapServerFieldToForm = {
+    cvv: 'cvv',
+    expiration_month: 'expMonth',
+    expiration_year: 'expYear',
+    number: 'pan',
+  };
+  App.mapServerRuleToClient = {
+    required: 'presence',
+    card_number: 'cardNumber',
+    format: 'format'
+  }
+  App.prototype.mapServerErrors = function (errorResponse) {
+    function serverErrorRulesToClient (serverRule) {
+      return App.mapServerRuleToClient[serverRule] || serverRule;
+    }
+    function errorsFromRules (rules) {
+      return rules.map(function (i) {
+        return serverErrorRulesToClient(i.rule);
+      });
+    }
+    function entryToFieldName (entry) {
+      return App.mapServerFieldToForm[entry.match(/^\$\.(.*)/)[1]];
+    }
+    return errorResponse.error.invalid.reduce(function (cur, i) {
+      cur[entryToFieldName(i.entry)] = errorsFromRules(i.rules);
+      return cur;
+    }, {});
+  };
+
   App.prototype.$$request = function (url, options) {
     return fetch('https://tokenizer-api.herokuapp.com' + url, {
       method: options.method,

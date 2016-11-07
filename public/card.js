@@ -237,9 +237,17 @@
       self.inputs[key].element.addEventListener('keyup', function (e) {
         self.onInputChange(self.inputs[key], e);
       });
+      self.inputs[key].element.addEventListener('blur', function (e) {
+        self.onInputChange(self.inputs[key], e);
+      });
+
     });
   };
 
+  CardForm.prototype.onInputBlur = function (input, e) {
+    var errors = this.validate(this.getValues()) || {};
+    this.showErrors(errors);
+  };
   CardForm.prototype.onInputChange = function (input, e) {
     var keyCode = e.which || e.keyCode;
     if (e.ctrlKey || e.altKey || e.metaKey ||
@@ -248,6 +256,7 @@
 
     var errors = this.validate(this.getValues()) || {};
     var value = input.getValue();
+
     var selection = input.getSelection();
     this.showErrors(errors);
 
@@ -286,16 +295,27 @@
     };
   }
   CardForm.prototype.validate = function (values) {
-    return validate(values, CardForm.validators, { fullMessages: false });
+    return (validate(values, CardForm.validators, { fullMessages: false, format: 'detailed' }) || []).reduce(
+      function (cur, item) {
+        cur[item.attribute] = (cur[item.attribute] || []).concat(item.validator);
+        return cur;
+      },
+      {}
+    );
   }
   CardForm.prototype.showErrors = function (errorObj) {
     errorObj = errorObj || {};
     var self = this;
+    console.log(errorObj);
     Object.keys(CardForm.mapErrorsToInputs).forEach(function (errorKey) {
       CardForm.mapErrorsToInputs[errorKey].reduce(function (added, inputKey) {
         if (added) return added;
-        if (errorObj[inputKey]) {
-          self.errors[errorKey].show(errorObj[inputKey]);
+        if (errorObj[inputKey] && self.inputs[inputKey].touched) {
+          self.errors[errorKey].show(errorObj[inputKey].map(function (i) {
+            return CardForm.validatorMessages[i];
+          }).filter(function (i) {
+            return !!i;
+          }));
           return true;
         } else {
           self.errors[errorKey].clear();
@@ -311,37 +331,32 @@
     'pan': ['pan'],
     'cvv': ['cvv'],
   };
+  CardForm.validatorMessages = {
+    presence: 'This field is required',
+    format: 'Value has invalid format',
+    length: 'Value has wrong length',
+    cardNumber: 'Value has invalid card number',
+  };
+
   CardForm.validators = {
     pan: {
-      presence: {
-        message: 'is required',
-      },
+      presence: true,
       length: {
-        is: 16,
-        wrongLength: 'need to have %{count} digits',
+        is: 16
       },
-      cardNumber: true
+      cardNumber: true,
     },
     expMonth: {
       presence: true,
       length: {
         is: 2
       },
-      numericality: {
-        onlyInteger: true,
-        greaterThan: 0,
-        lessThanOrEqualTo: 12,
-      }
     },
     expYear: {
       presence: true,
       length: {
         is: 2
       },
-      numericality: {
-        onlyInteger: true,
-        greaterThanOrEqualTo: Number(String((new Date()).getFullYear()).slice(-2))
-      }
     },
     cvv: {
       presence: true,
