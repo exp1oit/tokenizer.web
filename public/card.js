@@ -81,6 +81,32 @@
   InputElement.prototype.select = function () {
     this.element.select();
   }
+  InputElement.prototype.getSelection = function () {
+    var start, end, rangeEl, clone;
+
+    if (this.element.selectionStart !== undefined) {
+      start = this.element.selectionStart;
+      end = this.element.selectionEnd;
+    } else {
+      try {
+        this.element.focus();
+        rangeEl = this.element.createTextRange();
+        clone = rangeEl.duplicate();
+
+        rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
+        clone.setEndPoint('EndToStart', rangeEl);
+
+        start = clone.text.length;
+        end = start + rangeEl.text.length;
+      } catch (e) { /* not focused or not visible */ }
+    }
+
+    return { start, end };
+  }
+  InputElement.prototype.isCursorInTheEnd = function () {
+    var selection = this.getSelection();
+    return selection.start == selection.end && selection.start == this.element.value.length;
+  }
 
   // MaskedInputElement
 
@@ -213,13 +239,14 @@
 
     var errors = this.validate(this.getValues()) || {};
     var value = input.getValue();
+    var selection = input.getSelection();
     this.showErrors(errors);
 
     if (keyCode == KEYS.backspace) {
       if (!value.length) return this.focusPrevInput(input);
       return true;
     }
-    if (value.length === input.length && !errors[input.name]) this.focusNextInput(input);
+    if (value.length === input.length && !errors[input.name] && input.isCursorInTheEnd()) this.focusNextInput(input);
   };
   CardForm.prototype.focusNextInput = function (input) {
     var idx = CardForm.inputOrder.indexOf(input.name);
