@@ -78,6 +78,9 @@
   InputElement.prototype.focus = function () {
     this.element.focus();
   }
+  InputElement.prototype.select = function () {
+    this.element.select();
+  }
 
   // MaskedInputElement
 
@@ -235,6 +238,7 @@
     if (!this.inputs[nextInputName]) return;
 
     this.inputs[nextInputName].focus();
+    this.inputs[nextInputName].select();
   };
 
   CardForm.prototype.getValues = function () {
