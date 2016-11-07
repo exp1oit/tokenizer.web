@@ -8,7 +8,7 @@
       break;
     }
   })
-  
+
   window.sendToken = function () {
     window.frames.card_frame.postMessage({ action: 'getToken' }, location.origin)
   }

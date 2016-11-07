@@ -1,31 +1,32 @@
-(function (window) {'use strict';
+import CardForm from './models/CardForm'
 
-  function App (el) {
+class App {
+  constructor(el) {
     this.form = new CardForm(el);
     this.onMessage = this.onMessage.bind(this);
     this.subscribe();
   }
 
-  App.prototype.onMessage = function (event) {
+  onMessage (event) {
     switch (event.data.action) {
       case 'getToken':
-        this.onGetToken(event);
+      this.onGetToken(event);
       break;
     }
   }
-  App.prototype.subscribe = function () {
+  subscribe () {
     if (window.addEventListener) window.addEventListener("message", this.onMessage);
     else window.attachEvent("onmessage", this.onMessage); // IE8
   }
-  App.prototype.unsubscribe = function () {
+  unsubscribe () {
     if (window.addEventListener) window.removeEventListener("message", this.onMessage);
     else window.detachEvent("onmessage", this.onMessage); // IE8
   }
 
-  App.prototype.onGetToken = function (event) {
+  onGetToken (event) {
     var values = this.form.getValues();
-    var self = this;
-    this.$$request('/tokens', {
+
+    return this.$$request('/tokens', {
       method: 'POST',
       body: {
         type: "card",
@@ -34,24 +35,12 @@
         expiration_year: '20' + values.expYear,
         cvv: values.cvv,
       }
-    }).then(function (resp) {
-      return event.source.postMessage({ action: 'getToken', payload: resp.data }, '*');
-    }).catch(function (error) {
-      self.form.showErrors(self.mapServerErrors(error));
-    });
+    })
+    .then(resp => event.source.postMessage({ action: 'getToken', payload: resp.data }, '*'))
+    .catch(error => this.form.showErrors(this.mapServerErrors(error)));
   }
-  App.mapServerFieldToForm = {
-    cvv: 'cvv',
-    expiration_month: 'expMonth',
-    expiration_year: 'expYear',
-    number: 'pan',
-  };
-  App.mapServerRuleToClient = {
-    required: 'presence',
-    card_number: 'cardNumber',
-    format: 'format'
-  }
-  App.prototype.mapServerErrors = function (errorResponse) {
+
+  mapServerErrors (errorResponse) {
     function serverErrorRulesToClient (serverRule) {
       return App.mapServerRuleToClient[serverRule] || serverRule;
     }
@@ -69,7 +58,7 @@
     }, {});
   };
 
-  App.prototype.$$request = function (url, options) {
+  $$request (url, options) {
     return fetch('https://tokenizer-api.herokuapp.com' + url, {
       method: options.method,
       headers: Object.assign({
@@ -86,9 +75,19 @@
         return resp;
       });
     });
-
   }
+}
 
-  window.app = new App(document.getElementById('root'));
+App.mapServerFieldToForm = {
+  cvv: 'cvv',
+  expiration_month: 'expMonth',
+  expiration_year: 'expYear',
+  number: 'pan',
+};
+App.mapServerRuleToClient = {
+  required: 'presence',
+  card_number: 'cardNumber',
+  format: 'format'
+}
 
-})(window);
+window.app = new App(document.getElementById('root'));

@@ -12,9 +12,7 @@ server.use('/public', Express.static(path.resolve(process.cwd(), 'public')));
 server.use('/vendor', Express.static(path.resolve(process.cwd(), 'node_modules')));
 
 server.get('/', (req, res) => {
-  res.json({
-    message: 'Tokenizer.web Application',
-  });
+  res.render('demo');
 });
 
 server.use('/cards', cardApp);
