@@ -6,7 +6,7 @@ Web application of Payment Tokenizer
 - [ ] Language pack support
 - [ ] Parse server errors
 - [ ] Autofill 0 on expiration month input
-- [ ] Complex validate exp month + exp year
+- [ ] Complex validate exp. month + exp. year
 - [x] Select all input value when backspacing to previous field
-- [ ] Don't go to next field when cursor is not after last field characted
+- [x] Don't go to next field when cursor is not after last field character
 - [ ] Don't go to prev field when user removes last character in field
