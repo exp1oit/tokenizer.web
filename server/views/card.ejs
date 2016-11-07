@@ -7,6 +7,8 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="theme-color" content="#fff">
   <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.10.0/validate.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.min.js"></script>
 </head>
 <body>
   <style type="text/css">
@@ -15,10 +17,9 @@
   <div id="root">
     <%- html %>
   </div>
+  <script src="/public/utils.js"></script>
   <script src="/public/nebo15-mask.js"></script>
   <script src="/public/card.js"></script>
-  <script>
-    new CardForm(document.getElementById('root'));
-  </script>
+  <script src="/public/app.js"></script>
 </body>
 </html>

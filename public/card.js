@@ -1,5 +1,10 @@
 (function (window) { 'use strict';
 
+  function isNumber(e) {
+    var keyCode = e.which || e.keyCode;
+    return keyCode >= 48 && keyCode <= 57;
+  }
+
   function InputElement (element) {
     this.dirty = false;
     this.pristine = true;
@@ -91,20 +96,23 @@
       length: 16,
       mask: '1111 1111 1111 1111'
     });
-    this.inputs.expMonth = new CardInputElement(getTokenizerElement(rootElement, 'expMonth'), {
+    this.inputs.expMonth = new CardInputMaskElement(getTokenizerElement(rootElement, 'expMonth'), {
       autocomplete: 'cc-exp-month',
       name: 'expMonth',
       length: 2,
+      mask: '11',
     });
-    this.inputs.expYear = new CardInputElement(getTokenizerElement(rootElement, 'expYear'), {
+    this.inputs.expYear = new CardInputMaskElement(getTokenizerElement(rootElement, 'expYear'), {
       autocomplete: 'cc-exp-year',
       name: 'expYear',
       length: 2,
+      mask: '11',
     });
-    this.inputs.cvv = new CardInputElement(getTokenizerElement(rootElement, 'cvv'), {
+    this.inputs.cvv = new CardInputMaskElement(getTokenizerElement(rootElement, 'cvv'), {
       autocomplete: 'cc-exp-csc',
       name: 'cvv',
       length: 3,
+      mask: '111',
     });
 
     if (!this.inputs.pan) throw new Error('Undefined `pan` element');
@@ -211,27 +219,7 @@
         is: 3
       }
     },
-  }
-
-  // function onGetToken (event) {
-  //   console.log('onGetToken', getValues());
-  //   return event.source.postMessage({ action: 'getToken', payload: getValues() }, '*');
-  // }
-  // function listener(event) {
-  //   console.log('iframe received::', event);
-  //   switch (event.data.action) {
-  //     case 'getToken':
-  //     onGetToken(event);
-  //     break;
-  //   }
-  // }
-  //
-  // if (window.addEventListener) {
-  //   window.addEventListener("message", listener);
-  // } else {
-  //   // IE8
-  //   window.attachEvent("onmessage", listener);
-  // }
+  };
 
   window.CardForm = CardForm;
 
