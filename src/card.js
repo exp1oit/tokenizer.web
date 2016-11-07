@@ -37,7 +37,10 @@ class App {
       }
     })
     .then(resp => event.source.postMessage({ action: 'getToken', payload: resp.data }, '*'))
-    .catch(error => this.form.showErrors(this.mapServerErrors(error)));
+    .catch(error => {
+      this.form.forceTouched();
+      this.form.showErrors(this.mapServerErrors(error));
+    });
   }
 
   mapServerErrors (errorResponse) {

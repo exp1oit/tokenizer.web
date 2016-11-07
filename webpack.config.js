@@ -20,12 +20,12 @@ var config = {
     card: [
       'es6-promise',
       'whatwg-fetch',
-      path.resolve(__dirname, './client/card.js')
+      path.resolve(__dirname, './src/card.js')
     ],
   },
   devtool: 'source-map',
   output: {
-    path: __dirname + '/public',
+    path: __dirname + '/dist',
     filename: env === 'build' ? '[name].js' : '[name].js',
   },
   module: {
@@ -34,7 +34,7 @@ var config = {
         test: /(\.js)$/,
         loader: 'babel',
         include: [
-          path.resolve(__dirname, 'client'),
+          path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/nebo15-mask'),
         ]
       },
@@ -42,14 +42,14 @@ var config = {
         test: /(\.js)$/,
         loader: 'eslint-loader',
         include: [
-          path.resolve(__dirname, 'client'),
+          path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/nebo15-mask'),
         ]
       }
     ]
   },
   resolve: {
-    root: path.resolve('./client'),
+    root: path.resolve('./src'),
     extensions: ['', '.js']
   },
   plugins: plugins

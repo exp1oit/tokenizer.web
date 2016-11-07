@@ -43,6 +43,9 @@ class InputElement {
   select () {
     this.element.select();
   }
+  setTouched() {
+    this.touched = true;
+  }
 
   getSelection () {
     var start, end, rangeEl, clone;

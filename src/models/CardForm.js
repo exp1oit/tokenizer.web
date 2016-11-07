@@ -120,6 +120,11 @@ class CardForm {
       {}
     );
   }
+  forceTouched() {
+    Object.keys(this.inputs).forEach(key => {
+      this.inputs[key].setTouched();
+    });
+  }
   showErrors (errorObj) {
     errorObj = errorObj || {};
     var self = this;
