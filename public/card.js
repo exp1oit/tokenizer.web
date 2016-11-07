@@ -155,6 +155,15 @@
       length: 2,
       mask: '11',
     });
+
+    this.element.addEventListener('keydown', function (e) {
+      var keyCode = e.which || e.keyCode;
+      var number = Number(String.fromCharCode(keyCode));
+      if (isNaN(number) || number < 2 || element.value.length > 1) return;
+      e.preventDefault();
+      e.stopPropagation();
+      element.value = '0'+number;
+    })
   }
   CardExpMonthElement.prototype = CardInputElement.prototype;
 
@@ -241,7 +250,7 @@
     var value = input.getValue();
     var selection = input.getSelection();
     this.showErrors(errors);
-    
+
     if (keyCode == KEYS.backspace) {
       if (!value.length) return this.focusPrevInput(input);
       return true;
