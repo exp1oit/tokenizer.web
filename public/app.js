@@ -7,7 +7,6 @@
   }
 
   App.prototype.onMessage = function (event) {
-    console.log('app', event, this);
     switch (event.data.action) {
       case 'getToken':
         this.onGetToken(event);
@@ -38,7 +37,6 @@
     }).then(function (resp) {
       return event.source.postMessage({ action: 'getToken', payload: resp.data }, '*');
     }).catch(function (error) {
-      console.log(self.mapServerErrors(error));
       self.form.showErrors(self.mapServerErrors(error));
     });
   }

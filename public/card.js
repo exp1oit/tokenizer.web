@@ -306,7 +306,6 @@
   CardForm.prototype.showErrors = function (errorObj) {
     errorObj = errorObj || {};
     var self = this;
-    console.log(errorObj);
     Object.keys(CardForm.mapErrorsToInputs).forEach(function (errorKey) {
       CardForm.mapErrorsToInputs[errorKey].reduce(function (added, inputKey) {
         if (added) return added;
