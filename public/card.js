@@ -1,38 +1,35 @@
 (function (window) { 'use strict';
 
+  var KEYS = {
+    backspace: 8,
+  };
+
   function isNumber(e) {
     var keyCode = e.which || e.keyCode;
     return keyCode >= 48 && keyCode <= 57;
   }
+
+  // InputElement
 
   function InputElement (element) {
     this.dirty = false;
     this.pristine = true;
     this.touched = false;
     this.focused = false;
-    this.value = element.value;
+    this.__value = element.value;
     this.element = element;
 
-    var self = this;
-    element.addEventListener('keydown', function (e) {
-      self.onKeydown(e);
-    });
-    element.addEventListener('keyup', function (e) {
-      self.onKeyup(e);
-    });
-    element.addEventListener('focus', function (e) {
-      self.onFocus(e);
-    });
-    element.addEventListener('blur', function (e) {
-      self.onBlur(e);
-    });
+    this.onKeydown = this.onKeydown.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+
+    element.addEventListener('keydown', this.onKeydown);
+    element.addEventListener('focus', this.onFocus);
+    element.addEventListener('blur', this.onBlur);
   }
 
   InputElement.prototype.onKeydown = function (e) {
-    this.dirty = !!this.element.value;
-  }
-  InputElement.prototype.onKeyup = function (e) {
-    this.value = this.getValue();
+    this.dirty = !!this.getValue();
   }
   InputElement.prototype.onFocus = function (e) {
     this.focused = true;
@@ -44,41 +41,101 @@
   InputElement.prototype.getValue = function () {
     return this.element.value;
   }
+  InputElement.prototype.destroy = function () {
+    this.element.removeEventListener('keydown', this.onKeydown);
+    this.element.removeEventListener('keyup', this.onKeyup);
+    this.element.removeEventListener('focus', this.onFocus);
+    this.element.removeEventListener('blur', this.onBlur);
+  }
+
+  InputElement.prototype.focus = function () {
+    this.element.focus();
+  }
+
+  // MaskedInputElement
+
+  function MaskedInputElement (element, options) {
+    InputElement.call(this, element, options);
+    this.__mask = new Nebo15Mask.MaskedInput(this.element, options.mask);
+  }
+  MaskedInputElement.prototype = InputElement.prototype;
+  MaskedInputElement.prototype.getValue = function () {
+    return this.__mask.model;
+  };
+
+  // CardInputElement
 
   function CardInputElement (element, options) {
-    InputElement.call(this, element, options)
+    MaskedInputElement.call(this, element, options);
     var opts = options || {};
+
     this.name = opts.name;
     this.length = opts.length;
+
     this.element.setAttribute('name', opts.name || opts.autocomplete);
     this.element.setAttribute('type', 'text');
     this.element.setAttribute('pattern', '\d*');
     this.element.setAttribute('autocomplete', opts.autocomplete);
     this.element.setAttribute('x-autocompletetype', opts.autocomplete);
     this.element.setAttribute('inputmode', 'numeric');
-    if (opts.length) {
-      this.element.setAttribute('maxlength', opts.length);
-      this.element.setAttribute('minlength', opts.length);
-    }
+  }
+  CardInputElement.prototype = MaskedInputElement.prototype;
 
+  function CardPanElement (element, error) {
+    CardInputElement.call(this, element, {
+      autocomplete: 'cc-pan',
+      name: 'pan',
+      length: 16,
+      mask: '1111 1111 1111 1111',
+      error: error,
+    });
   }
-  CardInputElement.prototype = InputElement.prototype;
-  CardInputElement.prototype.showError = function (text) {
-    if (this.touched && this.error) {
-      this.error.innerHTML = text;
-    }
-  }
-  CardInputElement.prototype.clearError = function () {
-    if (!this.error) return;
-    this.error.innerHTML = '';
-  }
+  CardPanElement.prototype = CardInputElement.prototype;
 
-  function CardInputMaskElement (element, options) {
-    InputElement.call(this, element, options);
-    this.mask = options.mask;
-    this.$mask = new Nebo15Mask.MaskedInput(this.element, this.mask);
+  function CardExpMonthElement (element, error) {
+    CardInputElement.call(this, element, {
+      autocomplete: 'cc-exp-month',
+      name: 'expMonth',
+      length: 2,
+      mask: '11',
+    });
   }
-  CardInputMaskElement.prototype = InputElement.prototype;
+  CardExpMonthElement.prototype = CardInputElement.prototype;
+
+  function CardExpYearElement (element, error) {
+    CardInputElement.call(this, element, {
+      autocomplete: 'cc-exp-year',
+      name: 'expYear',
+      length: 2,
+      mask: '11',
+    });
+  }
+  CardExpYearElement.prototype = CardInputElement.prototype;
+
+  function CardCscElement (element, error) {
+    CardInputElement.call(this, element, {
+      autocomplete: 'cc-exp-csc',
+      name: 'cvv',
+      length: 3,
+      mask: '111',
+    });
+  }
+  CardCscElement.prototype = CardInputElement.prototype;
+
+  function ErrorElement(element) {
+    this.__element = element;
+  }
+  ErrorElement.prototype.show = function (errors) {
+    if (!this.__element) return false;
+    var arr = [].concat(errors);
+    this.__element.innerHTML = arr[0];
+    return true;
+  }
+  ErrorElement.prototype.clear = function () {
+    if (!this.__element) return false;
+    this.__element.innerHTML = '';
+    return true;
+  }
 
   function getTokenizerElement(root, name) {
     return root.querySelector('[data-tokenizer-element="'+ name +'"]');
@@ -90,30 +147,10 @@
   function CardForm (rootElement) {
     this.root = rootElement;
     this.inputs = {};
-    this.inputs.pan = new CardInputMaskElement(getTokenizerElement(rootElement, 'pan'), {
-      autocomplete: 'cc-pan',
-      name: 'pan',
-      length: 16,
-      mask: '1111 1111 1111 1111'
-    });
-    this.inputs.expMonth = new CardInputMaskElement(getTokenizerElement(rootElement, 'expMonth'), {
-      autocomplete: 'cc-exp-month',
-      name: 'expMonth',
-      length: 2,
-      mask: '11',
-    });
-    this.inputs.expYear = new CardInputMaskElement(getTokenizerElement(rootElement, 'expYear'), {
-      autocomplete: 'cc-exp-year',
-      name: 'expYear',
-      length: 2,
-      mask: '11',
-    });
-    this.inputs.cvv = new CardInputMaskElement(getTokenizerElement(rootElement, 'cvv'), {
-      autocomplete: 'cc-exp-csc',
-      name: 'cvv',
-      length: 3,
-      mask: '111',
-    });
+    this.inputs.pan = new CardPanElement(getTokenizerElement(rootElement, 'pan'));
+    this.inputs.expMonth = new CardExpMonthElement(getTokenizerElement(rootElement, 'expMonth'));
+    this.inputs.expYear = new CardExpYearElement(getTokenizerElement(rootElement, 'expYear'));
+    this.inputs.cvv = new CardCscElement(getTokenizerElement(rootElement, 'cvv'));
 
     if (!this.inputs.pan) throw new Error('Undefined `pan` element');
     if (!this.inputs.cvv) throw new Error('Undefined `cvv` element');
@@ -121,37 +158,38 @@
     if (!this.inputs.expYear) throw new Error('Undefined `expYear` element');
 
     this.errors = {};
-    this.errors.pan = getTokenizerError(rootElement, 'pan');
-    this.errors.expDate = getTokenizerError(rootElement, 'expDate');
-    this.errors.cvv = getTokenizerError(rootElement, 'cvv');
+    this.errors.pan = new ErrorElement(getTokenizerError(rootElement, 'pan'));
+    this.errors.expDate = new ErrorElement(getTokenizerError(rootElement, 'expDate'));
+    this.errors.cvv = new ErrorElement(getTokenizerError(rootElement, 'cvv'));
 
     this.init();
   }
-
   CardForm.prototype.init = function () {
-    [
-      this.inputs.pan,
-      this.inputs.expMonth,
-      this.inputs.expYear,
-      this.inputs.cvv
-    ].forEach(this.initInput.bind(this));
-  };
-  CardForm.prototype.initInput = function (input) {
     var self = this;
-    input.element.addEventListener('keyup', function (e) {
-      self.onInputChange(e, input);
-      if (!input.value && event.keyCode == 8) self.focusPrevInput(input);
-    });
-    input.element.addEventListener('blur', function (e) {
-      self.onInputChange(e, input);
+
+    this.onInputChange = this.onInputChange.bind(this);
+    Object.keys(this.inputs).forEach(function (key) {
+      self.inputs[key].element.addEventListener('keyup', function (e) {
+        self.onInputChange(self.inputs[key], e);
+      });
     });
   };
-  CardForm.prototype.onInputChange = function (e, input) {
+
+  CardForm.prototype.onInputChange = function (input, e) {
+    var keyCode = e.which || e.keyCode;
+    if (e.ctrlKey || e.altKey || e.metaKey ||
+      (keyCode > 90 || keyCode < 46 && [KEYS.backspace].indexOf(keyCode) === -1)
+    ) return false;
+
     var errors = this.validate(this.getValues()) || {};
+    var value = input.getValue();
     this.showErrors(errors);
-    if (String(input.value).length >= input.length && !errors[input.name]) {
-      this.focusNextInput(input);
+
+    if (keyCode == KEYS.backspace) {
+      if (!value.length) return this.focusPrevInput(input);
+      return true;
     }
+    if (value.length === input.length && !errors[input.name]) this.focusNextInput(input);
   };
   CardForm.prototype.focusNextInput = function (input) {
     var idx = CardForm.inputOrder.indexOf(input.name);
@@ -160,7 +198,7 @@
     var nextInputName = CardForm.inputOrder[idx+1];
     if (!this.inputs[nextInputName]) return;
 
-    this.inputs[nextInputName].element.focus();
+    this.inputs[nextInputName].focus();
   };
   CardForm.prototype.focusPrevInput = function (input) {
     var idx = CardForm.inputOrder.indexOf(input.name);
@@ -169,15 +207,15 @@
     var nextInputName = CardForm.inputOrder[idx-1];
     if (!this.inputs[nextInputName]) return;
 
-    this.inputs[nextInputName].element.focus();
+    this.inputs[nextInputName].focus();
   };
 
   CardForm.prototype.getValues = function () {
     return {
-      pan: this.inputs.pan.$mask.model,
-      expMonth: this.inputs.expMonth.value,
-      expYear: this.inputs.expYear.value,
-      cvv: this.inputs.cvv.value,
+      pan: this.inputs.pan.getValue(),
+      expMonth: this.inputs.expMonth.getValue(),
+      expYear: this.inputs.expYear.getValue(),
+      cvv: this.inputs.cvv.getValue(),
     };
   }
   CardForm.prototype.validate = function (values) {
@@ -185,32 +223,53 @@
   }
   CardForm.prototype.showErrors = function (errorObj) {
     errorObj = errorObj || {};
-    if (errorObj.pan && this.inputs.pan.touched) this.errors.pan.innerHTML = errorObj.pan[0];
-    else this.errors.pan.innerHTML = null;
-    if (errorObj.cvv && this.inputs.cvv.touched) this.errors.cvv.innerHTML = errorObj.cvv[0];
-    else this.errors.cvv.innerHTML = null;
-    if (errorObj.expMonth && this.inputs.expMonth.touched) this.errors.expDate.innerHTML = errorObj.expMonth[0];
-    else if (errorObj.expYear && this.inputs.expYear.touched) this.errors.expDate.innerHTML = errorObj.expYear[0];
-    else this.errors.expDate.innerHTML = null;
+    var self = this;
+    Object.keys(CardForm.mapErrorsToInputs).forEach(function (errorKey) {
+      CardForm.mapErrorsToInputs[errorKey].reduce(function (added, inputKey) {
+        if (added) return added;
+        if (errorObj[inputKey]) {
+          self.errors[errorKey].show(errorObj[inputKey]);
+          return true;
+        } else {
+          self.errors[errorKey].clear();
+        }
+        return added;
+      }, false);
+    })
   }
+
   CardForm.inputOrder = ['pan','expMonth','expYear','cvv'];
+  CardForm.mapErrorsToInputs = {
+    'expDate': ['expMonth', 'expYear'],
+    'pan': ['pan'],
+    'cvv': ['cvv'],
+  };
   CardForm.validators = {
     pan: {
       presence: true,
       length: {
         is: 16
-      }
+      },
     },
     expMonth: {
       presence: true,
       length: {
         is: 2
+      },
+      numericality: {
+        onlyInteger: true,
+        greaterThan: 0,
+        lessThanOrEqualTo: 12,
       }
     },
     expYear: {
       presence: true,
       length: {
         is: 2
+      },
+      numericality: {
+        onlyInteger: true,
+        greaterThanOrEqualTo: Number(String((new Date()).getFullYear()).slice(-2))
       }
     },
     cvv: {
