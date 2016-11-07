@@ -241,7 +241,7 @@
     var value = input.getValue();
     var selection = input.getSelection();
     this.showErrors(errors);
-
+    
     if (keyCode == KEYS.backspace) {
       if (!value.length) return this.focusPrevInput(input);
       return true;
