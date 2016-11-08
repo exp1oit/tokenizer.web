@@ -12,4 +12,4 @@ Web application of Payment Tokenizer
 - [ ] Don't go to prev. field when user removes last character in field
 - [ ] Add error class to input wrapper (to specify style for lable, input and asssociated element if need)
 - [ ] Add card provider recognition (visa/mc)
-- [ ] Add support for language packs inside project + page query option
+- [x] Add support for language packs inside project + page query option
