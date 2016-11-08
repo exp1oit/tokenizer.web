@@ -206,6 +206,7 @@ span.label {
 .card {
   padding: 32px 35px 38px 32px;
   min-width: 320px;
+  height: 204px;
   color: #fff;
   font-family: Raleway-Bold, Arial, sans-serif;
   font-size: 13px;
@@ -238,6 +239,7 @@ span.label {
   opacity: .5
 }
 .card__error {
+  position: absolute;
   margin-top: 5px;
   font-size: 11px
 }
@@ -250,7 +252,7 @@ span.label {
 }
 .card__row {
   position: relative;
-  margin-top: 15px;
+  margin-top: 30px;
   *zoom: 1
 }
 .card__row:after {
@@ -269,9 +271,9 @@ span.label {
   font-size: 12px
 }
 .card__cvv .card__error {
-  float: right;
   text-align: right;
   width: 120px;
+  right: 0;
 }
 
 .card__cvv .label {
@@ -279,11 +281,20 @@ span.label {
 }
 .card__type {
   position: absolute;
+  height: 30px;
   right: 14px;
-  bottom: 10px
+  text-align: right;
 }
 .card__type img {
-  display: block
+  display: inline-block;
+  margin: auto;
+  text-align: ;
+  max-height: 16px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  right: 0;
 }
 .card__expDate {
   float: left;

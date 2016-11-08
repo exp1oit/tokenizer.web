@@ -5,6 +5,7 @@ import CardPanElement from './CardPanElement';
 import CardExpMonthElement from './CardExpMonthElement';
 import CardExpYearElement from './CardExpYearElement';
 import CardCscElement from './CardCscElement';
+import CardTypeElement from './CardTypeElement';
 
 import ErrorElement from './ErrorElement';
 
@@ -34,6 +35,9 @@ class CardForm {
     this.inputs.expMonth = new CardExpMonthElement(getTokenizerElement(rootElement, 'expMonth'));
     this.inputs.expYear = new CardExpYearElement(getTokenizerElement(rootElement, 'expYear'));
     this.inputs.cvv = new CardCscElement(getTokenizerElement(rootElement, 'cvv'));
+
+    const cardTypeElement = rootElement.querySelector('[data-tokenizer-card-type]');
+    this.cardType = cardTypeElement && new CardTypeElement(cardTypeElement);
 
     if (!this.inputs.pan) throw new Error('Undefined `pan` element');
     if (!this.inputs.cvv) throw new Error('Undefined `cvv` element');
@@ -124,6 +128,7 @@ class CardForm {
     };
   }
   validate (values) {
+    if (this.cardType) this.cardType.update(values.pan);
     return (validate(values, CardForm.validators, { fullMessages: false, format: 'detailed' }) || []).reduce(
       function (cur, item) {
         cur[item.attribute] = (cur[item.attribute] || []).concat(item.validator);
