@@ -1,0 +1,29 @@
+<div class="card" >
+    <div class="card__row">
+        <label for="card_numb" class="label">Номер карты</label>
+        <input placeholder="____ ____ ____ ____"  data-tokenizer-element="pan" />
+        <!-- <div class="card__type"><i></i></div> -->
+    </div>
+    <div class="card__error" data-tokenizer-error="pan"></div>
+    <div class="card__row">
+        <div class="card__expDate">
+          <div class="card__day">
+              <label for="" class="label">Срок действия</label>
+              <div class="spinner">
+                  <input data-tokenizer-element="expMonth" />
+              </div>
+          </div>
+          <div class="card__year">
+              <div class="spinner">
+                  <input data-tokenizer-element="expYear" />
+              </div>
+          </div>
+          <div class="card__error" data-tokenizer-error="expDate"></div>
+        </div>
+        <div class="card__cvv">
+            <label for="cvv" class="label">CVV2/CVC</label>
+            <input data-tokenizer-element="cvv" />
+            <div class="card__error" data-tokenizer-error="cvv"></div>
+        </div>
+    </div>
+</div>

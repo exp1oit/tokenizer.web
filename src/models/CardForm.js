@@ -39,9 +39,16 @@ class CardForm {
     if (!this.inputs.expYear) throw new Error('Undefined `expYear` element');
 
     this.errors = {};
-    this.errors.pan = new ErrorElement(getTokenizerError(rootElement, 'pan'));
-    this.errors.expDate = new ErrorElement(getTokenizerError(rootElement, 'expDate'));
-    this.errors.cvv = new ErrorElement(getTokenizerError(rootElement, 'cvv'));
+    var errorElements = rootElement.querySelectorAll('[data-tokenizer-error]');
+    [].forEach.call(errorElements, (el) => {
+      let value = el.getAttribute('data-tokenizer-error');
+      if (!value) return;
+      value = value.split('|');
+      value.forEach(i => {
+        if (['pan','expDate','cvv'].indexOf(i) === -1) return;
+        this.errors[i] = new ErrorElement(el);
+      })
+    });
 
     this.init();
   }
