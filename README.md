@@ -10,4 +10,6 @@ Web application of Payment Tokenizer
 - [x] Select all input value when backspacing to previous field
 - [x] Don't go to next field when cursor is not after last field character
 - [ ] Don't go to prev. field when user removes last character in field
-- [ ] Add error class to error input
+- [ ] Add error class to input wrapper (to specify style for lable, input and asssociated element if need)
+- [ ] Add card provider recognition (visa/mc)
+- [ ] Add support for language packs inside project + page query option
