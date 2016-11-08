@@ -1,12 +1,12 @@
 <div class="card" >
-    <div class="card__row">
+    <div class="card__row" data-tokenizer-error-wrap="pan">
         <label for="card_numb" class="label"><%= t('numberTitle') %></label>
         <input placeholder="____ ____ ____ ____"  data-tokenizer-element="pan" />
         <!-- <div class="card__type"><i></i></div> -->
     </div>
     <div class="card__error" data-tokenizer-error="pan"></div>
     <div class="card__row">
-        <div class="card__expDate">
+        <div class="card__expDate" data-tokenizer-error-wrap="expDate">
           <div class="card__day">
               <label for="" class="label"><%= t('expDateTitle') %></label>
               <div class="spinner">
@@ -20,7 +20,7 @@
           </div>
           <div class="card__error" data-tokenizer-error="expDate"></div>
         </div>
-        <div class="card__cvv">
+        <div class="card__cvv" data-tokenizer-error-wrap="cvv">
             <label for="cvv" class="label"><%= t('cvvTitle') %></label>
             <input data-tokenizer-element="cvv" />
             <div class="card__error" data-tokenizer-error="cvv"></div>

@@ -48,7 +48,10 @@ class CardForm {
       value = value.split('|');
       value.forEach(i => {
         if (['pan','expDate','cvv'].indexOf(i) === -1) return;
-        this.errors[i] = new ErrorElement(el);
+        this.errors[i] = new ErrorElement(
+          el,
+          rootElement.querySelector(`[data-tokenizer-error-wrap="${i}"]`)
+        );
       })
     });
 

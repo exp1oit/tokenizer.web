@@ -241,7 +241,7 @@ span.label {
   margin-top: 5px;
   font-size: 11px
 }
-.card .is-error {
+.card .is-error input {
   border: 1px solid red;
   background-color: #ffe7e7
 }
