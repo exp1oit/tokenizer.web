@@ -1,6 +1,6 @@
 <div class="card" >
     <div class="card__row">
-        <label for="card_numb" class="label">Номер карты</label>
+        <label for="card_numb" class="label"><%= t('numberTitle') %></label>
         <input placeholder="____ ____ ____ ____"  data-tokenizer-element="pan" />
         <!-- <div class="card__type"><i></i></div> -->
     </div>
@@ -8,7 +8,7 @@
     <div class="card__row">
         <div class="card__expDate">
           <div class="card__day">
-              <label for="" class="label">Срок действия</label>
+              <label for="" class="label"><%= t('expDateTitle') %></label>
               <div class="spinner">
                   <input data-tokenizer-element="expMonth" />
               </div>
@@ -21,7 +21,7 @@
           <div class="card__error" data-tokenizer-error="expDate"></div>
         </div>
         <div class="card__cvv">
-            <label for="cvv" class="label">CVV2/CVC</label>
+            <label for="cvv" class="label"><%= t('cvvTitle') %></label>
             <input data-tokenizer-element="cvv" />
             <div class="card__error" data-tokenizer-error="cvv"></div>
         </div>

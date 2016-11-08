@@ -25,8 +25,10 @@ function getTokenizerError(root, name) {
 }
 
 class CardForm {
-  constructor (rootElement) {
+  constructor (rootElement, options = {}) {
     this.root = rootElement;
+    this.messages = options.messages || CardForm.validatorMessages;
+
     this.inputs = {};
     this.inputs.pan = new CardPanElement(getTokenizerElement(rootElement, 'pan'));
     this.inputs.expMonth = new CardExpMonthElement(getTokenizerElement(rootElement, 'expMonth'));
@@ -140,7 +142,7 @@ class CardForm {
         if (added) return added;
         if (errorObj[inputKey] && self.inputs[inputKey].touched) {
           self.errors[errorKey].show(errorObj[inputKey].map(function (i) {
-            return CardForm.validatorMessages[i];
+            return self.messages[i];
           }).filter(function (i) {
             return !!i;
           }));

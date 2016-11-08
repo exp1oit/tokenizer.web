@@ -1,0 +1,17 @@
+{
+  "en": {
+    "numberTitle": "Card number",
+    "expDateTitle": "Expiration date",
+    "cvvTitle": "CVV2/CVC"
+  },
+  "ru": {
+    "numberTitle": "Номер карты",
+    "expDateTitle": "Срок действия",
+    "cvvTitle": "CVV2/CVC"
+  },
+  "ua": {
+    "numberTitle": "Номер картки",
+    "expDateTitle": "Термін дії",
+    "cvvTitle": "CVV2/CVC"
+  }
+}

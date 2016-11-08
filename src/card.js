@@ -1,8 +1,10 @@
 import CardForm from './models/CardForm'
 
 class App {
-  constructor(el) {
-    this.form = new CardForm(el);
+  constructor(el, options = {}) {
+    this.form = new CardForm(el, {
+      messages: options.langpack
+    });
     this.onMessage = this.onMessage.bind(this);
     this.subscribe();
   }
@@ -93,4 +95,15 @@ App.mapServerRuleToClient = {
   format: 'format'
 }
 
-window.app = new App(document.getElementById('root'));
+let langpack = null;
+if (window.LANGPACK) {
+  try {
+    langpack = JSON.parse(unescape(window.LANGPACK));
+  } catch (e) {
+    console.error('Failed to parse LANGPACK from server');
+  }
+}
+
+window.app = new App(document.getElementById('root'), {
+  langpack,
+});

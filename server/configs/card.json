@@ -1,0 +1,20 @@
+{
+  "ru": {
+    "presence": "Обязательное поле",
+    "format": "Неправильный формат",
+    "length": "Неправильная длина",
+    "cardNumber": "Ошибка в номере карты"
+  },
+  "ua": {
+    "presence": "Обов'язкове поле",
+    "format": "Невірний формат поля",
+    "length": "Неправильна довжина значення",
+    "cardNumber": "Помилка в номері карти"
+  },
+  "en": {
+    "presence": "Required field",
+    "format": "Wrong format",
+    "length": "Invalid value length",
+    "cardNumber": "Invalid card number"
+  }
+}
