@@ -4,7 +4,7 @@
   "description": "Payment tokenizer for card processing over PCI DSS",
   "main": "server/index.js",
   "scripts": {
-    "postinstall": "[[ $PREBUILD ]] && npm run build || exit 0",
+    "postinstall": "[ $PREBUILD ] && npm run build || exit 0",
     "start": "node server",
     "build": "webpack --mode=build",
     "dev": "webpack --progress --colors --watch --mode=dev"
