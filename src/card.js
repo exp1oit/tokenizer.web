@@ -1,4 +1,5 @@
 import CardForm from './models/CardForm'
+import { API_HOST, BASIC_CREDENTIALS } from './config';
 
 class App {
   constructor(el, options = {}) {
@@ -64,12 +65,12 @@ class App {
   };
 
   $$request (url, options) {
-    return fetch('https://tokenizer-api.herokuapp.com' + url, {
+    return fetch(API_HOST + url, {
       method: options.method,
       headers: Object.assign({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic REdSc01wWERDajoK',
+        'Authorization': `Basic ${BASIC_CREDENTIALS}`,
       }, options.headers),
       body: options.body ? JSON.stringify(options.body) : null,
     }).then(function (payload) {
