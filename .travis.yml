@@ -1,25 +1,27 @@
 language: node_js
 node_js:
-- 6.9.1
+  - 6.9.1
 sudo: required
 cache:
   directories:
-  - ~/.nvm
-  - node_modules
+    - ~/.nvm
+    - node_modules
 services:
-- docker
+  - docker
 git:
   depth: 1
 env:
   global:
-  - RELEASE_BRANCH="master"
-  - DOCKER_HUB_ACCOUNT=nebo15
-  - MAIN_BRANCHES="master develop"
-  - DOCKER_USERNAME=bondalex
-  # DOCKER_PASSWORD GITHUB_TOKEN
-  - secure: ec/or+kQobG+HPvhaOajAvwZzxFhLeVqlaD/2WvganQBQgWaiQQyNJ9kKBdcqTRXgivzNCto0FV/foDTaskG5xRL2InKq34Tu1z9VkiCtwmdGoluuVKA4PJgVbvOSgToGI4uDMQ12NtTmNveC3/NIR4kuFZ44BfnzjeeXFCp3hterfPlZRJ5TRzQ/s+VrCsh++7Q5JYPY+lio4ExROj1bYCHIiv7av+TmZX2Rf2AyF/cAu0yFL/6ICznhVP8L8euGUMZV9oMyAdJLSndrWIIILmdGkEDrKh1XxzfzgjZwnzqX/8SOJvPZ+Zw+IEPcab2duchvvL9hcy7wV1vucYwgk9wPqFVUR+gxQ4E19D35d+EEUixxdUg6GVU1E28X2B+suzgwXZyWrmjd+MzzdKdE0yivyr7v42rij/9qGmuk8uqT6eQb1zY0InOGeVehIHD/61iPCYpAcIdrmM4MFln8qmmhdAYaZZEIbjkzsiSgPcAE7p+EjNQfY7Tf5mIyJpf/bVIX5UlWaq0//q7Hc4gmOeQtPxgTbti7wt+kwfm3HjSrHQLn8kZvZ5GhnnKzpBWHLh8ERO7SRTEvLR0ewvrPoJwGX2DMEJ1/U6ejoxoz+6OHfa3S4FfBwdBWZ/iCjM/r0HRY71cRgwNKT8mZYeUqikfjEJHhN2kO/k/3BL1iSc=
+    - RELEASE_BRANCH="master"
+    - DOCKER_HUB_ACCOUNT=nebo15
+    - MAIN_BRANCHES="master develop"
+    - DOCKER_USERNAME=bondalex
+    # DOCKER_PASSWORD GITHUB_TOKEN
+    - secure: ec/or+kQobG+HPvhaOajAvwZzxFhLeVqlaD/2WvganQBQgWaiQQyNJ9kKBdcqTRXgivzNCto0FV/foDTaskG5xRL2InKq34Tu1z9VkiCtwmdGoluuVKA4PJgVbvOSgToGI4uDMQ12NtTmNveC3/NIR4kuFZ44BfnzjeeXFCp3hterfPlZRJ5TRzQ/s+VrCsh++7Q5JYPY+lio4ExROj1bYCHIiv7av+TmZX2Rf2AyF/cAu0yFL/6ICznhVP8L8euGUMZV9oMyAdJLSndrWIIILmdGkEDrKh1XxzfzgjZwnzqX/8SOJvPZ+Zw+IEPcab2duchvvL9hcy7wV1vucYwgk9wPqFVUR+gxQ4E19D35d+EEUixxdUg6GVU1E28X2B+suzgwXZyWrmjd+MzzdKdE0yivyr7v42rij/9qGmuk8uqT6eQb1zY0InOGeVehIHD/61iPCYpAcIdrmM4MFln8qmmhdAYaZZEIbjkzsiSgPcAE7p+EjNQfY7Tf5mIyJpf/bVIX5UlWaq0//q7Hc4gmOeQtPxgTbti7wt+kwfm3HjSrHQLn8kZvZ5GhnnKzpBWHLh8ERO7SRTEvLR0ewvrPoJwGX2DMEJ1/U6ejoxoz+6OHfa3S4FfBwdBWZ/iCjM/r0HRY71cRgwNKT8mZYeUqikfjEJHhN2kO/k/3BL1iSc=
+before_install:
+  - sh ./bin/install-docker-travis.sh
 before_script:
-- chmod -R +x bin
-- ./bin/version-increment.sh && ./bin/build.sh && ./bin/start.sh || { exit 1; }
+  - chmod -R +x bin
+  - ./bin/version-increment.sh && ./bin/build.sh && ./bin/start.sh || { exit 1; }
 after_success:
-- ./bin/ci/push.sh
+  - ./bin/ci/push.sh
