@@ -6,6 +6,8 @@ const fs = require('fs-promise');
 const ejs = require('ejs');
 
 const langs = require('./configs/card.json');
+const config = require('../src/config');
+
 const app = Express.Router(); // eslint-disable-line
 
 class Project {
@@ -53,7 +55,12 @@ app.get('/:projectAlias', (req, res, next) => {
       project.getHtml().then(resp => ejs.render(resp, { t: translateWith(projectJson[lang]) })),
     ])
   ).then(
-    ([ css, html ]) => res.render('card', { html, css, langpack: escape(JSON.stringify(langpack)) }),
+    ([ css, html ]) => res.render('card', {
+      html,
+      css,
+      langpack: escape(JSON.stringify(langpack)),
+      config: escape(JSON.stringify(config)),
+    }),
     ( error ) => next(Boom.wrap(error))
   );
 });
