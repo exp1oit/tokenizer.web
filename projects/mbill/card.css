@@ -82,16 +82,16 @@ video {
     margin: 0;
     padding: 0;
     border: 0;
-    vertical-align: baseline
+    vertical-align: baseline;
 }
 body,
 html {
-    height: 100%
+    height: 100%;
 }
 a img,
 fieldset,
 img {
-    border: none
+    border: none;
 }
 input[type=email],
 input[type=password],
@@ -99,24 +99,24 @@ input[type=tel],
 input[type=text],
 textarea {
     -webkit-appearance: none;
-    -webkit-border-radius: 0
+    -webkit-border-radius: 0;
 }
 textarea {
-    overflow: auto
+    overflow: auto;
 }
 button,
 input {
     margin: 0;
     padding: 0;
-    border: 0
+    border: 0;
 }
 button::-moz-focus-inner {
     border: 0;
-    padding: 0
+    padding: 0;
 }
 button,
 input[type=submit] {
-    cursor: pointer
+    cursor: pointer;
 }
 a,
 a:focus,
@@ -132,39 +132,39 @@ input,
 select,
 span,
 textarea {
-    outline: none
+    outline: none;
 }
 ol,
 ul {
-    list-style-type: none
+    list-style-type: none;
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     * {
-        -webkit-text-size-adjust: none
+        -webkit-text-size-adjust: none;
     }
 }
 table {
     border-spacing: 0;
     border-collapse: collapse;
-    width: 100%
+    width: 100%;
 }
 html {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 *,
 :after,
 :before {
-    box-sizing: inherit
+    box-sizing: inherit;
 }
 @-webkit-keyframes autofill {
     to {
         color: #666;
-        background: transparent
+        background: transparent;
     }
 }
 input:-webkit-autofill {
     -webkit-animation-name: autofill;
-    -webkit-animation-fill-mode: both
+    -webkit-animation-fill-mode: both;
 }
 
 .label {
@@ -176,18 +176,18 @@ input:-webkit-autofill {
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
-  display: block
+  display: block;
 }
 .label+input+.input-req {
-  top: 59px
+  top: 59px;
 }
 .label.is-small {
   font-size: 12px;
-  opacity: .5
+  opacity: .5;
 }
 .label.is-light,
 .label.is-small {
-  font-family: Raleway-Regular, Arial, sans-serif
+  font-family: Raleway-Regular, Arial, sans-serif;
 }
 .label.is-required:after {
   position: relative;
@@ -196,11 +196,11 @@ input:-webkit-autofill {
   opacity: .8;
   font-size: 25px;
   top: 3px;
-  right: -4px
+  right: -4px;
 }
 div.label,
 span.label {
-  cursor: text
+  cursor: text;
 }
 
 .card {
@@ -215,28 +215,28 @@ span.label {
   border-radius: 10px;
   box-shadow: 1px 1.7px 4px rgba(43, 43, 43, .1);
   background-image: -webkit-linear-gradient(52deg, #3e0b66, #324da6);
-  background-image: linear-gradient(38deg, #3e0b66, #324da6)
+  background-image: linear-gradient(38deg, #3e0b66, #324da6);
 }
 
 .card.is-bg {
   background: url(/static/card-bg.png?7a33eb32c0fa6a1e876bdf9eb640a03c) 0 0 no-repeat;
-  background-size: cover
+  background-size: cover;
 }
 .card.is-otp {
   position: relative;
   background-image: -webkit-linear-gradient(bottom, #e9fffe, #fff 58%, #fff);
   background-image: linear-gradient(0deg, #e9fffe 0, #fff 58%, #fff);
   border: 1px solid #7bc43d;
-  color: #2b2b2b
+  color: #2b2b2b;
 }
 .card.is-otp:before {
   position: absolute;
   content: "";
   top: 23px;
-  right: 37px
+  right: 37px;
 }
 .card.is-disabled {
-  opacity: .5
+  opacity: .5;
 }
 .card__error {
   position: absolute;
@@ -245,30 +245,28 @@ span.label {
 }
 .card .is-error input {
   border: 1px solid red;
-  background-color: #ffe7e7
+  background-color: #ffe7e7;
 }
 .card__error-right {
-  text-align: right
+  text-align: right;
 }
 .card__row {
   position: relative;
   margin-top: 30px;
-  *zoom: 1
 }
 .card__row:after {
   content: " ";
   display: table;
-  clear: both
+  clear: both;
 }
 .card__row:first-child {
-  margin-top: 0
+  margin-top: 0;
 }
 .card__cvv {
   float: right;
   margin-left: 25px;
   width: 75px;
-  /*text-transform: uppercase;*/
-  font-size: 12px
+  font-size: 12px;
 }
 .card__cvv .card__error {
   text-align: right;
@@ -277,7 +275,7 @@ span.label {
 }
 
 .card__cvv .label {
-  font-family: Geometria-Bold, Arial, sans-serif
+  font-family: Geometria-Bold, Arial, sans-serif;
 }
 .card__type {
   position: absolute;
@@ -288,7 +286,6 @@ span.label {
 .card__type img {
   display: inline-block;
   margin: auto;
-  text-align: ;
   max-height: 16px;
   margin: auto;
   top: 0;
@@ -310,14 +307,14 @@ span.label {
   display: inline-block;
 }
 .card .label {
-  white-space: nowrap
+  white-space: nowrap;
 }
 .card .label .spinner input {
-  padding-left: 20px
+  padding-left: 20px;
 }
 .card__year {
   margin-left: 8px;
-  padding-top: 21px
+  padding-top: 21px;
 }
 .card input {
   padding: 0 4px;
@@ -327,14 +324,14 @@ span.label {
   background-color: #fff;
   border: 1px solid #d1d9dc;
   border-radius: 4px;
-  display: block
+  display: block;
 }
 .card input:-webkit-autofill {
-  -webkit-animation-name: autofill-white
+  -webkit-animation-name: autofill-white;
 }
 .card input.is-error:-webkit-autofill {
-  -webkit-animation-name: autofill-red
+  -webkit-animation-name: autofill-red;
 }
 .card .label {
-  margin-bottom: 5px
+  margin-bottom: 5px;
 }
