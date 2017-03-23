@@ -29,7 +29,7 @@
     "es6-promise": "^4.0.5",
     "express": "^4.14.0",
     "fs-promise": "^0.5.0",
-    "nebo15-mask": "github:nebo15/nebo15-mask",
+    "nebo15-mask": "0.1.9",
     "validate.js": "^0.11.1",
     "whatwg-fetch": "^1.0.0",
     "babel": "6.3.13",
