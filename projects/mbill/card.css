@@ -253,6 +253,7 @@ span.label {
 .card__row {
   position: relative;
   margin-top: 30px;
+  *zoom: 1;
 }
 .card__row:after {
   content: " ";
@@ -305,6 +306,7 @@ span.label {
 .card__year {
   width: 65px;
   display: inline-block;
+  vertical-align: bottom;
 }
 .card .label {
   white-space: nowrap;
