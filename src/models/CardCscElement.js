@@ -5,9 +5,12 @@ class CardCscElement extends CardInputElement {
     super(element, {
       autocomplete: 'cc-exp-csc',
       name: 'cvv',
+      type: 'tel',
       length: 3,
       mask: '111',
     });
+
+    element.setAttribute('style', '-webkit-text-security: disc;');
   }
 }
 

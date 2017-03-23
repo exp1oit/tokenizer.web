@@ -9,8 +9,8 @@ class CardInputElement extends MaskedInputElement {
     this.length = opts.length;
 
     this.element.setAttribute('name', opts.name || opts.autocomplete);
-    this.element.setAttribute('type', 'text');
-    this.element.setAttribute('pattern', '\d*');
+    this.element.setAttribute('type', opts.type || 'text');
+    this.element.setAttribute('pattern', '[0-9]*');
     this.element.setAttribute('autocomplete', opts.autocomplete);
     this.element.setAttribute('x-autocompletetype', opts.autocomplete);
     this.element.setAttribute('inputmode', 'numeric');
