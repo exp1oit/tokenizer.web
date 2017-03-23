@@ -10,6 +10,10 @@ class MaskedInputElement extends InputElement {
   getValue () {
     return this.__mask.model;
   }
+  setValue (value) {
+    this.__mask.value = this.__mask.autocomplete(value);
+    return this.__mask.value;
+  }
 }
 
 export default MaskedInputElement;
